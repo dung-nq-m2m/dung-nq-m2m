@@ -34,7 +34,7 @@
     },
     {
       "id": "me-cung",
-      "lessonId": "practice-me-cung",
+      "lessonId": "game-me-cung",
       "title": "Mê cung",
       "icon": "🏰",
       "description": "Tìm đường thoát khỏi mê cung bằng Turtle.",
@@ -64,7 +64,7 @@
     },
     {
       "id": "dua-xe",
-      "lessonId": "practice-dua-xe",
+      "lessonId": "game-dua-xe",
       "title": "Đua xe",
       "icon": "🏎️",
       "description": "Đua xe trên đường bằng phím điều khiển.",

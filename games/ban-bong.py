@@ -1,172 +1,208 @@
 """
-Game: Bắn bóng ⚽
-Học viện Turtle Python - Lớp 6
+GAME: BẮN BÓNG ⚽
 
-← → di chuyển súng, SPACE bắn trúng mục tiêu
-
-Hình ảnh & âm thanh (tùy chọn) — cùng thư mục với file .py:
-  nen-san.gif, sung.gif, muc-tieu.gif
-  ban.wav, trung.wav, thang.wav
-
-Xem: assets/huong-dan-ban-bong.md
+← → : Di chuyển súng
+SPACE: Bắn
 """
-import os
-import random
+
 import turtle
-
-THU_MUC = os.path.dirname(os.path.abspath(__file__))
-NGUONG_TRUNG = 25
+import random
 
 
-def co_file(ten_file):
-    duong_dan = os.path.join(THU_MUC, ten_file)
-    return duong_dan if os.path.isfile(duong_dan) else None
-
-
-try:
-    import winsound
-
-    def phat_am(ten_file):
-        path = co_file(ten_file)
-        if path:
-            winsound.PlaySound(path, winsound.SND_ASYNC)
-except ImportError:
-    def phat_am(ten_file):
-        pass
-
+# =========================
+# 1. TẠO MÀN HÌNH
+# =========================
 
 man_hinh = turtle.Screen()
-man_hinh.title("Bắn bóng ⚽")
-man_hinh.setup(width=600, height=500)
+man_hinh.title("Bắn bóng")
+man_hinh.setup(600, 500)
+man_hinh.bgcolor("navy")
 man_hinh.tracer(0)
 
-nen = co_file("nen-san.gif")
-if nen:
-    man_hinh.bgpic(nen)
-else:
-    man_hinh.bgcolor("navy")
 
-SUNG_GIF = co_file("sung.gif")
-MT_GIF = co_file("muc-tieu.gif")
-if SUNG_GIF:
-    man_hinh.addshape(SUNG_GIF)
-if MT_GIF:
-    man_hinh.addshape(MT_GIF)
+# =========================
+# 2. TẠO SÚNG
+# =========================
 
 sung = turtle.Turtle()
-if SUNG_GIF:
-    sung.shape(SUNG_GIF)
-else:
-    sung.shape("triangle")
-    sung.color("yellow")
+sung.shape("triangle")
+sung.color("yellow")
 sung.penup()
 sung.goto(0, -200)
 sung.setheading(90)
 
-dan = []
-muc_tieu = []
+
+# =========================
+# 3. TẠO ĐIỂM
+# =========================
+
 diem = 0
-thang = False
-
-bang = turtle.Turtle()
-bang.hideturtle()
-bang.penup()
-bang.color("white")
-bang.goto(0, 220)
 
 
-def ve_bang():
-    bang.clear()
-    bang.goto(0, 220)
-    bang.write(
-        f"Điểm: {diem}  |  ← → Space",
+bang_diem = turtle.Turtle()
+bang_diem.hideturtle()
+bang_diem.color("white")
+bang_diem.penup()
+
+
+def hien_thi_diem():
+    bang_diem.clear()
+    bang_diem.goto(0, 220)
+
+    bang_diem.write(
+        "Điểm: " + str(diem),
         align="center",
-        font=("Arial", 14, "bold")
+        font=("Arial", 16, "bold")
     )
 
 
-for i in range(5):
-    mt = turtle.Turtle()
-    if MT_GIF:
-        mt.shape(MT_GIF)
-    else:
-        mt.shape("circle")
-        mt.color(random.choice(["red", "orange", "pink"]))
-    mt.penup()
-    mt.goto(-200 + i * 100, 150)
-    muc_tieu.append(mt)
+# =========================
+# 4. TẠO CÁC QUẢ BÓNG
+# =========================
 
+muc_tieu = []
+
+for i in range(5):
+    bong = turtle.Turtle()
+    bong.shape("circle")
+    bong.color(random.choice(["red", "orange", "pink"]))
+    bong.penup()
+
+    bong.goto(-200 + i * 100, 150)
+
+    muc_tieu.append(bong)
+
+
+# =========================
+# 5. TẠO DANH SÁCH ĐẠN
+# =========================
+
+dan = []
+
+
+# =========================
+# 6. DI CHUYỂN SÚNG
+# =========================
+
+def sang_trai():
+    sung.setx(sung.xcor() - 30)
+
+
+def sang_phai():
+    sung.setx(sung.xcor() + 30)
+
+
+# =========================
+# 7. BẮN
+# =========================
 
 def ban():
-    if thang:
-        return
-    phat_am("ban.wav")
-    vien = turtle.Turtle()
-    vien.shape("circle")
-    vien.color("white")
-    vien.shapesize(0.4, 0.4)
-    vien.penup()
-    vien.goto(sung.xcor(), sung.ycor() + 20)
-    dan.append(vien)
+    vien_dan = turtle.Turtle()
 
+    vien_dan.shape("circle")
+    vien_dan.color("white")
+    vien_dan.shapesize(0.4, 0.4)
+    vien_dan.penup()
+
+    vien_dan.goto(
+        sung.xcor(),
+        sung.ycor() + 20
+    )
+
+    dan.append(vien_dan)
+
+
+# =========================
+# 8. KIỂM TRA ĐẠN BẮN TRÚNG
+# =========================
+
+def kiem_tra_trung(vien_dan):
+    global diem
+
+    for bong in muc_tieu[:]:
+
+        if vien_dan.distance(bong) < 25:
+
+            bong.hideturtle()
+            muc_tieu.remove(bong)
+
+            vien_dan.hideturtle()
+            dan.remove(vien_dan)
+
+            diem = diem + 10
+            hien_thi_diem()
+
+            return True
+
+    return False
+
+
+# =========================
+# 9. CẬP NHẬT GAME
+# =========================
 
 def cap_nhat():
-    global diem, thang
-    if thang:
-        return
+    global diem
 
-    for vien in dan[:]:
-        vien.sety(vien.ycor() + 8)
-        if vien.ycor() > 260:
-            vien.hideturtle()
-            dan.remove(vien)
+    # Di chuyển từng viên đạn
+    for vien_dan in dan[:]:
+
+        vien_dan.sety(vien_dan.ycor() + 10)
+
+        # Đạn bay ra khỏi màn hình
+        if vien_dan.ycor() > 250:
+            vien_dan.hideturtle()
+            dan.remove(vien_dan)
+
             continue
-        for mt in muc_tieu[:]:
-            if vien.distance(mt) < NGUONG_TRUNG:
-                mt.hideturtle()
-                muc_tieu.remove(mt)
-                vien.hideturtle()
-                dan.remove(vien)
-                diem += 10
-                phat_am("trung.wav")
-                ve_bang()
-                break
 
-    if not muc_tieu:
-        thang = True
-        phat_am("thang.wav")
-        bang.clear()
-        bang.goto(0, 0)
-        bang.write(
-            f"🎉 THẮNG!\nĐiểm: {diem}",
+        # Kiểm tra bắn trúng bóng
+        da_trung = kiem_tra_trung(vien_dan)
+
+        if da_trung:
+            continue
+
+    # Kiểm tra thắng
+    if len(muc_tieu) == 0:
+
+        bang_diem.clear()
+        bang_diem.goto(0, 0)
+
+        bang_diem.write(
+            "THẮNG!\nĐiểm: " + str(diem),
             align="center",
-            font=("Arial", 22, "bold")
+            font=("Arial", 24, "bold")
         )
+
         man_hinh.update()
+
         return
 
+    # Cập nhật màn hình
     man_hinh.update()
+
+    # Gọi lại hàm sau 40 mili giây
     man_hinh.ontimer(cap_nhat, 40)
 
 
-def trai():
-    if not thang:
-        sung.setx(max(sung.xcor() - 30, -270))
-        man_hinh.update()
-
-
-def phai():
-    if not thang:
-        sung.setx(min(sung.xcor() + 30, 270))
-        man_hinh.update()
-
+# =========================
+# 10. ĐIỀU KHIỂN BÀN PHÍM
+# =========================
 
 man_hinh.listen()
-man_hinh.onkey(trai, "Left")
-man_hinh.onkey(phai, "Right")
+
+man_hinh.onkey(sang_trai, "Left")
+man_hinh.onkey(sang_phai, "Right")
 man_hinh.onkey(ban, "space")
 
-ve_bang()
-man_hinh.update()
+
+# =========================
+# 11. BẮT ĐẦU GAME
+# =========================
+
+hien_thi_diem()
+
 cap_nhat()
+
 turtle.done()
+

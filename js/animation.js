@@ -75,6 +75,12 @@ const TurtleAnimation = {
       case 'game-shoot':
         this.renderGameShoot(container, config);
         break;
+      case 'game-maze':
+        this.renderGameMaze(container, config);
+        break;
+      case 'game-race':
+        this.renderGameRace(container, config);
+        break;
       default:
         this.renderForward(container, config);
     }
@@ -465,6 +471,53 @@ const TurtleAnimation = {
     setTimeout(() => document.getElementById('play-animation')?.click(), 500);
   },
 
+  renderGameMaze(container, config) {
+    container.innerHTML = `
+      <p><strong>${config.label || 'Mê cung'}</strong></p>
+      <div style="position:relative;height:110px;background:#fafafa;border:2px solid #1a3a6b;border-radius:12px;overflow:hidden;max-width:280px;margin:0 auto">
+        <div style="position:absolute;top:12px;left:18px;width:70%;height:8px;background:#1a3a6b"></div>
+        <div style="position:absolute;top:12px;right:18px;width:8px;height:55%;background:#1a3a6b"></div>
+        <div style="position:absolute;bottom:20px;left:30%;width:50%;height:8px;background:#1a3a6b"></div>
+        <div id="maze-turtle" style="position:absolute;top:28px;left:22px;font-size:1.4rem;transition:top 0.8s,left 0.8s">🐢</div>
+        <div style="position:absolute;bottom:12px;right:24px;font-size:1.2rem">⭐</div>
+      </div>
+      <p style="color:#666;font-size:0.85rem;margin-top:0.5rem">↑↓←→ tìm đích vàng</p>
+      <button class="btn btn-orange" id="play-animation">▶ Xem đường đi</button>
+    `;
+    document.getElementById('play-animation')?.addEventListener('click', () => {
+      const t = document.getElementById('maze-turtle');
+      if (t) {
+        t.style.top = '28px';
+        t.style.left = '22px';
+        void t.offsetWidth;
+        t.style.top = '68px';
+        t.style.left = '200px';
+      }
+    });
+    setTimeout(() => document.getElementById('play-animation')?.click(), 500);
+  },
+
+  renderGameRace(container, config) {
+    container.innerHTML = `
+      <p><strong>${config.label || 'Đua xe'}</strong></p>
+      <div style="position:relative;height:120px;background:#6b6b6b;border-radius:12px;overflow:hidden;max-width:220px;margin:0 auto">
+        <div style="position:absolute;left:33%;top:0;bottom:0;width:2px;background:#ccc;opacity:0.5"></div>
+        <div style="position:absolute;left:66%;top:0;bottom:0;width:2px;background:#ccc;opacity:0.5"></div>
+        <div id="race-enemy" style="position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:1.2rem;transition:top 1.2s linear">🚗</div>
+        <div id="race-car" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:1.4rem;transition:left 0.3s">🚙</div>
+      </div>
+      <p style="color:#666;font-size:0.85rem;margin-top:0.5rem">← → đổi làn · né xe!</p>
+      <button class="btn btn-orange" id="play-animation">▶ Xem demo</button>
+    `;
+    document.getElementById('play-animation')?.addEventListener('click', () => {
+      const e = document.getElementById('race-enemy');
+      const c = document.getElementById('race-car');
+      if (e) { e.style.top = '8px'; void e.offsetWidth; e.style.top = '90px'; }
+      if (c) c.style.left = '22%';
+    });
+    setTimeout(() => document.getElementById('play-animation')?.click(), 500);
+  },
+
   renderResultSVG(lessonId) {
     const previews = {
       forward: `<svg viewBox="0 0 200 80" width="200"><line x1="20" y1="40" x2="170" y2="40" stroke="#4c97ff" stroke-width="3"/><text x="15" y="35" font-size="18">🐢</text></svg>`,
@@ -487,7 +540,9 @@ const TurtleAnimation = {
       listen: `<svg viewBox="0 0 140 50" width="140"><text x="10" y="35" font-size="28">👂⌨️🐢</text></svg>`,
       'game-hung-tao': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="lightblue"/><text x="50" y="25" font-size="16">🍎</text><text x="45" y="70" font-size="20">🐢</text></svg>`,
       'game-ne-bom': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="#222"/><text x="48" y="25" font-size="16">💣</text><text x="45" y="70" font-size="20">🐢</text></svg>`,
-      'game-ban-bong': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="navy"/><circle cx="40" cy="20" r="8" fill="orange"/><circle cx="80" cy="20" r="8" fill="orange"/><text x="52" y="75" font-size="14">🔺</text></svg>`
+      'game-ban-bong': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="navy"/><circle cx="40" cy="20" r="8" fill="orange"/><circle cx="80" cy="20" r="8" fill="orange"/><text x="52" y="75" font-size="14">🔺</text></svg>`,
+      'game-me-cung': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="#fafafa" stroke="#1a3a6b"/><path d="M15 15 h90 v20 h-40 v30 h40" fill="none" stroke="#1a3a6b" stroke-width="4"/><text x="18" y="40" font-size="14">🐢</text><text x="88" y="68" font-size="14">⭐</text></svg>`,
+      'game-dua-xe': `<svg viewBox="0 0 120 80" width="120"><rect width="120" height="80" fill="#6b6b6b"/><line x1="40" y1="0" x2="40" y2="80" stroke="#ccc" stroke-dasharray="4"/><line x1="80" y1="0" x2="80" y2="80" stroke="#ccc" stroke-dasharray="4"/><text x="50" y="25" font-size="14">🚗</text><text x="50" y="70" font-size="14">🚙</text></svg>`
     };
     return previews[lessonId] || previews.forward;
   }

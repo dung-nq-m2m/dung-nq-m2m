@@ -219,7 +219,7 @@
     "result": "Game hoàn chỉnh",
     "exercise": "Tự thiết kế game mới"
   },
-  "prev": "game-ne-bom",
+  "prev": "game-dua-xe",
   "next": null,
   "codeGuide": {
     "intro": "Code theo đúng thứ tự biểu đồ thuật toán. Mỗi bước: đọc giải thích → gõ thử trên máy → <strong>trả lời đúng trắc nghiệm</strong> mới mở bước sau.",

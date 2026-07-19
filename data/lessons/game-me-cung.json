@@ -1,0 +1,344 @@
+{
+  "id": "game-me-cung",
+  "chapter": 6,
+  "chapterTitle": "Làm Game",
+  "title": "Mê cung",
+  "icon": "🏰",
+  "codeLocked": true,
+  "objectives": [
+    "Vẽ mê cung bằng vòng lặp forward + right",
+    "Điều khiển rùa bằng 4 phím mũi tên",
+    "Thiết kế điều kiện thắng bằng abs() / khoảng cách",
+    "Dùng biến trạng thái thang để dừng khi thắng"
+  ],
+  "explanation": "Game <strong>Mê cung</strong> luyện kỹ năng <strong>điều khiển + đích đến</strong>.\n\n• Vẽ tường bằng list độ dài đoạn\n• Rùa đi từng bước <code>buoc = 20</code>\n• Chạm gần đích vàng → <code>thang = True</code>\n\nKhác Né bom: không cần vòng lặp ontimer — mỗi lần nhấn phím là một bước.",
+  "architecture": {
+    "intro": "Mê cung dùng kiến trúc 4 tầng — nhấn mạnh nhập liệu và điều kiện thắng.",
+    "layers": [
+      {
+        "title": "1. Khởi tạo",
+        "items": [
+          "Screen 500×500",
+          "Vẽ tường mê cung",
+          "rua, dich, thang=False"
+        ]
+      },
+      {
+        "title": "2. Nhập liệu",
+        "items": [
+          "↑↓←→ onkey",
+          "listen()"
+        ]
+      },
+      {
+        "title": "3. Logic",
+        "items": [
+          "forward(buoc)",
+          "kiem_tra_thang()",
+          "if not thang"
+        ]
+      },
+      {
+        "title": "4. Hiển thị",
+        "items": [
+          "write hướng dẫn",
+          "write THẮNG"
+        ]
+      }
+    ],
+    "note": "Mỗi hàm di chuyển đều kiểm tra thang trước — giống song ở Né bom!"
+  },
+  "variables": [
+    {
+      "name": "tuong",
+      "meaning": "Turtle vẽ tường",
+      "initial": "Turtle(), màu navy"
+    },
+    {
+      "name": "dich",
+      "meaning": "Đích vàng cần tới",
+      "initial": "circle gold (160,-160)"
+    },
+    {
+      "name": "rua",
+      "meaning": "Nhân vật người chơi",
+      "initial": "turtle green (-160,160)"
+    },
+    {
+      "name": "buoc",
+      "meaning": "Độ dài mỗi bước",
+      "initial": "20"
+    },
+    {
+      "name": "thang",
+      "meaning": "Đã thắng?",
+      "initial": "False"
+    }
+  ],
+  "algorithm": {
+    "title": "Thuật toán Game Mê cung",
+    "steps": [
+      {
+        "type": "start",
+        "label": "BẮT ĐẦU"
+      },
+      {
+        "type": "process",
+        "label": "Vẽ mê cung + đặt rùa và đích"
+      },
+      {
+        "type": "input",
+        "label": "Nhấn ↑↓←→"
+      },
+      {
+        "type": "process",
+        "label": "Đổi hướng + forward(buoc)"
+      },
+      {
+        "type": "decision",
+        "label": "Gần đích (|dx|<30 và |dy|<30)?",
+        "yes": "thang=True, THẮNG",
+        "no": "Chờ phím tiếp"
+      },
+      {
+        "type": "end",
+        "label": "KẾT THÚC"
+      }
+    ]
+  },
+  "pseudocode": {
+    "note": "Viết code từ giả mã — chú ý kiểm tra thang ở đầu mỗi hàm di chuyển:",
+    "lines": [
+      "BẮT ĐẦU",
+      "  vẽ mê cung bằng for + forward + right(90)",
+      "  đặt dich (vàng), rua (xanh), thang ← False",
+      "",
+      "  HÀM di_chuyen(huong):",
+      "    NẾU thang = True: DỪNG",
+      "    setheading(huong), forward(buoc)",
+      "    NẾU gần đích: thang ← True, hiện THẮNG",
+      "",
+      "  listen(), gắn ↑↓←→",
+      "KẾT THÚC"
+    ]
+  },
+  "syntax": "if abs(rua.xcor() - dich.xcor()) < 30 and abs(rua.ycor() - dich.ycor()) < 30:",
+  "syntaxNote": "Điều kiện thắng 2 chiều — cả X và Y đều gần đích.",
+  "animation": {
+    "type": "game-maze",
+    "label": "Mê cung 🏰"
+  },
+  "assetsGuide": "<p>Game Mê cung chạy tốt với hình vẽ mặc định. Muốn đẹp hơn, đặt file <strong>cùng thư mục</strong> với <code>me-cung.py</code>.</p><table class=\"assets-table\"><tr><th>Loại</th><th>File</th><th>Ghi chú</th></tr><tr><td>Nền</td><td><code>nen-me-cung.gif</code></td><td>500×500, tùy chọn</td></tr><tr><td>Đích</td><td><code>dich.gif</code></td><td>Sao / cờ vàng</td></tr><tr><td>Âm</td><td><code>thang.wav</code></td><td>Khi tới đích</td></tr></table><p>📄 <code>games/me-cung.py</code> · <code>games/assets/huong-dan-me-cung.md</code></p>",
+  "code": "import turtle\n\nman_hinh = turtle.Screen()\nman_hinh.title(\"Mê cung 🏰\")\nman_hinh.bgcolor(\"white\")\nman_hinh.setup(width=500, height=500)\n\ntuong = turtle.Turtle()\ntuong.speed(0)\ntuong.pensize(3)\ntuong.color(\"navy\")\n\ndef ve_tuong(dai):\n    tuong.forward(dai)\n\ndef ve_me_cung():\n    tuong.penup()\n    tuong.goto(-180, 180)\n    tuong.pendown()\n    for dai in [360, 80, 200, 80, 200, 80, 120, 80, 240, 80, 200]:\n        ve_tuong(dai)\n        tuong.right(90)\n\nve_me_cung()\n\ndich = turtle.Turtle()\ndich.shape(\"circle\")\ndich.color(\"gold\")\ndich.penup()\ndich.goto(160, -160)\ndich.shapesize(1.5, 1.5)\n\nrua = turtle.Turtle()\nrua.shape(\"turtle\")\nrua.color(\"green\")\nrua.penup()\nrua.goto(-160, 160)\nrua.setheading(270)\n\nbuoc = 20\nthang = False\n\nthong_bao = turtle.Turtle()\nthong_bao.hideturtle()\nthong_bao.penup()\nthong_bao.goto(0, 210)\nthong_bao.write(\"↑↓←→ di chuyển — tìm sao vàng!\",\n                align=\"center\", font=(\"Arial\", 12, \"bold\"))\n\ndef kiem_tra_thang():\n    global thang\n    if abs(rua.xcor() - dich.xcor()) < 30 and abs(rua.ycor() - dich.ycor()) < 30:\n        thang = True\n        thong_bao.clear()\n        thong_bao.write(\"🎉 THẮNG RỒI!\",\n                        align=\"center\", font=(\"Arial\", 22, \"bold\"))\n\ndef len():\n    if not thang:\n        rua.setheading(90)\n        rua.forward(buoc)\n        kiem_tra_thang()\n\ndef xuong():\n    if not thang:\n        rua.setheading(270)\n        rua.forward(buoc)\n        kiem_tra_thang()\n\ndef trai():\n    if not thang:\n        rua.setheading(180)\n        rua.forward(buoc)\n        kiem_tra_thang()\n\ndef phai():\n    if not thang:\n        rua.setheading(0)\n        rua.forward(buoc)\n        kiem_tra_thang()\n\nman_hinh.listen()\nman_hinh.onkey(len, \"Up\")\nman_hinh.onkey(xuong, \"Down\")\nman_hinh.onkey(trai, \"Left\")\nman_hinh.onkey(phai, \"Right\")\n\nturtle.done()",
+  "resultDescription": "Điều khiển rùa tìm tới ngôi sao vàng — gần đích là thắng!",
+  "remember": [
+    {
+      "command": "thang = True/False",
+      "meaning": "Biến trạng thái thắng"
+    },
+    {
+      "command": "abs(x1-x2) < 30",
+      "meaning": "Gần đích theo trục"
+    },
+    {
+      "command": "setheading + forward",
+      "meaning": "Đổi hướng rồi bước"
+    },
+    {
+      "tip": "Vẽ tường trước — đặt rùa và đích sau!"
+    }
+  ],
+  "exercises": [
+    {
+      "number": 1,
+      "title": "Sơ đồ thắng",
+      "description": "Vẽ nhánh: chưa tới đích vs THẮNG."
+    },
+    {
+      "number": 2,
+      "title": "Tự code",
+      "description": "Viết game từ giả mã, test 4 phím."
+    },
+    {
+      "number": 3,
+      "title": "Mở rộng",
+      "description": "Thêm tường mới hoặc đích thứ hai."
+    }
+  ],
+  "quiz": {
+    "question": "Khi thang = True, hàm len() phải làm gì?",
+    "options": [
+      {
+        "text": "Vẫn cho rùa đi tiếp",
+        "correct": false
+      },
+      {
+        "text": "Không di chuyển (if not thang)",
+        "correct": true
+      },
+      {
+        "text": "Xóa mê cung",
+        "correct": false
+      },
+      {
+        "text": "Gọi listen() lại",
+        "correct": false
+      }
+    ],
+    "explanation": "if not thang: — dừng điều khiển khi đã thắng."
+  },
+  "infographic": {
+    "function": "Di chuyển + điều kiện thắng",
+    "syntax": "onkey 4 hướng + abs()",
+    "example": "Tìm đích vàng trong mê cung",
+    "result": "THẮNG khi gần đích",
+    "exercise": "Tự thiết kế tường mới"
+  },
+  "prev": "game-ne-bom",
+  "next": "game-dua-xe",
+  "codeGuide": {
+    "intro": "Code theo biểu đồ thuật toán. Mỗi bước: đọc → gõ thử → <strong>trả lời đúng trắc nghiệm</strong> mới mở bước sau.",
+    "steps": [
+      {
+        "title": "Bước 1 — Vẽ mê cung",
+        "flowLabel": "Vẽ mê cung + đặt rùa và đích",
+        "explain": "Tầng <strong>Khởi tạo</strong>. Em tạo màn hình, Turtle tường, viết <code>ve_me_cung()</code> dùng list độ dài đoạn và <code>right(90)</code> sau mỗi đoạn.",
+        "checklist": [
+          "Screen title, bgcolor white, setup(500, 500)",
+          "tuong: speed(0), pensize(3), color navy",
+          "for dai in [...]: forward(dai); right(90)",
+          "Gọi ve_me_cung() rồi turtle.done() xem thử"
+        ],
+        "hintCode": "import turtle\n\nman_hinh = turtle.Screen()\nman_hinh.title(\"Mê cung 🏰\")\nman_hinh.bgcolor(\"white\")\nman_hinh.setup(500, 500)\n\ntuong = turtle.Turtle()\ntuong.speed(0)\ntuong.pensize(3)\ntuong.color(\"navy\")\n\ndef ve_me_cung():\n    tuong.penup()\n    tuong.goto(-180, 180)\n    tuong.pendown()\n    for dai in [360, 80, 200, 80, 200, 80, 120, 80, 240, 80, 200]:\n        tuong.forward(dai)\n        tuong.right(90)\n\nve_me_cung()\nturtle.done()",
+        "goal": "Chạy file — thấy tường mê cung xanh navy trên nền trắng.",
+        "quiz": [
+          {
+            "question": "Sau mỗi đoạn tường, Turtle làm gì?",
+            "options": [
+              "tuong.right(90)",
+              "tuong.left(45)",
+              "tuong.circle(80)",
+              "tuong.clear()"
+            ],
+            "correct": 0
+          },
+          {
+            "question": "List [360, 80, 200, ...] dùng để làm gì?",
+            "options": [
+              "Độ dài từng đoạn tường cần vẽ",
+              "Danh sách màu tường",
+              "Tọa độ đích",
+              "Số bước của rùa"
+            ],
+            "correct": 0
+          }
+        ]
+      },
+      {
+        "title": "Bước 2 — Đặt đích và rùa",
+        "flowLabel": "Vẽ mê cung + đặt rùa và đích",
+        "explain": "Tạo <code>dich</code> (vàng) ở góc dưới phải và <code>rua</code> (xanh) ở góc trên trái. Thêm <code>buoc</code>, <code>thang = False</code> và dòng hướng dẫn.",
+        "checklist": [
+          "dich: circle gold, goto(160, -160)",
+          "rua: turtle green, goto(-160, 160), heading 270",
+          "buoc = 20, thang = False",
+          "thong_bao.write hướng dẫn phím"
+        ],
+        "hintCode": "dich = turtle.Turtle()\ndich.shape(\"circle\")\ndich.color(\"gold\")\ndich.penup()\ndich.goto(160, -160)\n\nrua = turtle.Turtle()\nrua.shape(\"turtle\")\nrua.color(\"green\")\nrua.penup()\nrua.goto(-160, 160)\nrua.setheading(270)\n\nbuoc = 20\nthang = False",
+        "goal": "Thấy rùa góc trên trái và chấm vàng góc dưới phải.",
+        "quiz": [
+          {
+            "question": "Biến thang ban đầu nên là gì?",
+            "options": [
+              "False",
+              "True",
+              "0",
+              "\"thang\""
+            ],
+            "correct": 0
+          },
+          {
+            "question": "rua.setheading(270) nghĩa là hướng nào?",
+            "options": [
+              "Xuống",
+              "Lên",
+              "Trái",
+              "Phải"
+            ],
+            "correct": 0
+          }
+        ]
+      },
+      {
+        "title": "Bước 3 — Phím ↑↓←→ di chuyển",
+        "flowLabel": "Nhấn ↑↓←→ / Đổi hướng + forward",
+        "explain": "Mỗi hàm: nếu chưa thắng → <code>setheading</code> → <code>forward(buoc)</code>. Gắn <code>listen()</code> và <code>onkey</code> cho 4 phím.",
+        "checklist": [
+          "def len/xuong/trai/phai với if not thang",
+          "setheading(90/270/180/0) rồi forward(buoc)",
+          "man_hinh.listen()",
+          "onkey(..., \"Up\"/\"Down\"/\"Left\"/\"Right\")"
+        ],
+        "hintCode": "def len():\n    if not thang:\n        rua.setheading(90)\n        rua.forward(buoc)\n\nman_hinh.listen()\nman_hinh.onkey(len, \"Up\")\nman_hinh.onkey(xuong, \"Down\")\nman_hinh.onkey(trai, \"Left\")\nman_hinh.onkey(phai, \"Right\")",
+        "goal": "Nhấn mũi tên — rùa di chuyển từng bước 20 đơn vị.",
+        "quiz": [
+          {
+            "question": "Trước onkey phải gọi hàm nào?",
+            "options": [
+              "listen()",
+              "update()",
+              "done()",
+              "clear()"
+            ],
+            "correct": 0
+          },
+          {
+            "question": "Tại sao cần if not thang trước khi đi?",
+            "options": [
+              "Không cho đi tiếp khi đã thắng",
+              "Để tăng tốc độ",
+              "Để xóa tường",
+              "Không cần thiết"
+            ],
+            "correct": 0
+          }
+        ]
+      },
+      {
+        "title": "Bước 4 — Điều kiện thắng",
+        "flowLabel": "Gần đích (|dx|<30 và |dy|<30)?",
+        "explain": "Hàm <code>kiem_tra_thang()</code> so sánh tọa độ rùa và đích. Nếu cả |dx| và |dy| &lt; 30 → <code>thang = True</code>, hiện THẮNG. Gọi hàm này sau mỗi bước di chuyển.",
+        "checklist": [
+          "abs(rua.xcor()-dich.xcor()) < 30",
+          "và abs(...y...) < 30",
+          "thang = True + write THẮNG",
+          "Gọi kiem_tra_thang() cuối mỗi hàm di chuyển"
+        ],
+        "hintCode": "def kiem_tra_thang():\n    global thang\n    if (abs(rua.xcor() - dich.xcor()) < 30\n            and abs(rua.ycor() - dich.ycor()) < 30):\n        thang = True\n        thong_bao.clear()\n        thong_bao.write(\"🎉 THẮNG RỒI!\",\n                        align=\"center\", font=(\"Arial\", 22, \"bold\"))",
+        "goal": "Đưa rùa gần chấm vàng — hiện THẮNG RỒI và dừng điều khiển.",
+        "quiz": [
+          {
+            "question": "Điều kiện thắng đúng là gì?",
+            "options": [
+              "|dx|<30 và |dy|<30",
+              "Chỉ |dx|<30",
+              "rua.xcor() == dich.xcor()",
+              "buoc > 20"
+            ],
+            "correct": 0
+          },
+          {
+            "question": "global thang trong hàm để làm gì?",
+            "options": [
+              "Cho phép gán lại biến thang bên ngoài hàm",
+              "Xóa biến thang",
+              "Tăng điểm",
+              "Vẽ tường mới"
+            ],
+            "correct": 0
+          }
+        ]
+      }
+    ]
+  }
+}

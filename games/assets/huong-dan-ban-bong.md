@@ -1,6 +1,6 @@
 # Hướng dẫn hình ảnh & âm thanh — Game Bắn bóng ⚽
 
-← [Tổng quan Chương 6](HUONG-DAN-CHUONG-6.md) · Trước: [Né bom](huong-dan-ne-bom.md)
+← [Tổng quan Chương 6](HUONG-DAN-CHUONG-6.md) · Trước: [Đua xe](huong-dan-dua-xe.md)
 
 Dành cho học sinh lớp 6 · Học viện Turtle Python — **Dự án cuối Chương 6**
 

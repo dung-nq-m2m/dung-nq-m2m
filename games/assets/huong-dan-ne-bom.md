@@ -1,6 +1,6 @@
 # Hướng dẫn hình ảnh & âm thanh — Game Né bom 💣
 
-← [Tổng quan Chương 6](HUONG-DAN-CHUONG-6.md) · Trước: [Hứng táo](huong-dan-hung-tao.md) · Tiếp: [Bắn bóng](huong-dan-ban-bong.md)
+← [Tổng quan Chương 6](HUONG-DAN-CHUONG-6.md) · Trước: [Hứng táo](huong-dan-hung-tao.md) · Tiếp: [Mê cung](huong-dan-me-cung.md)
 
 Dành cho học sinh lớp 6 · Học viện Turtle Python
 

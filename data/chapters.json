@@ -74,6 +74,8 @@
       "lessons": [
         { "id": "game-hung-tao", "title": "Hứng táo", "slug": "game-hung-tao" },
         { "id": "game-ne-bom", "title": "Né bom", "slug": "game-ne-bom" },
+        { "id": "game-me-cung", "title": "Mê cung", "slug": "game-me-cung" },
+        { "id": "game-dua-xe", "title": "Đua xe", "slug": "game-dua-xe" },
         { "id": "game-ban-bong", "title": "Bắn bóng", "slug": "game-ban-bong" }
       ]
     }

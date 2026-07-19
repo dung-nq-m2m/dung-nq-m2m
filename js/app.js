@@ -23,7 +23,7 @@ const TurtleAcademy = {
     const legacy = sessionStorage.getItem('turtle_gv_code_unlocked');
     if (legacy !== '1') return;
     sessionStorage.removeItem('turtle_gv_code_unlocked');
-    ['game-hung-tao', 'game-ne-bom', 'game-ban-bong'].forEach(id => this._addUnlockedLesson(id));
+    ['game-hung-tao', 'game-ne-bom', 'game-me-cung', 'game-dua-xe', 'game-ban-bong'].forEach(id => this._addUnlockedLesson(id));
   },
 
   _readUnlockedLessons() {
